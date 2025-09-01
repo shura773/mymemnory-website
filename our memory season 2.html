@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" style="--accent: #ff6aa8; --accent-2: #9b5cff; --bg: #0f1020;"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Our 2 Years Anniversary Book</title>
+  <meta name="description" content="A tiny website to celebrate our love story—timeline, gallery, vows, and a special song.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1020;
+      --card: #15162a;
+      --ink: #eaeaf6;
+      --muted: #b6b7d6;
+      --accent: #ff6aa8;
+      --accent-2: #9b5cff;
+      --ring: rgba(255, 106, 168, 0.4);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 1200px at 100% -10%, rgba(255,106,168,.08), transparent 60%),
+                  radial-gradient(1000px 1000px at -10% 110%, rgba(155,92,255,.08), transparent 60%), var(--bg);
+      color: var(--ink);
+      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.6;
+    }
+
+    /* Floating petals */
+    .petal { position: fixed; top: -10vh; width: 16px; height: 16px; pointer-events: none; z-index: 0; }
+    .petal svg { width: 100%; height: 100%; fill: rgba(255,106,168,.6); filter: drop-shadow(0 2px 4px rgba(0,0,0,.25)); }
+    @keyframes fall {
+      0%   { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(120vh) translateX(var(--drift)) rotate(360deg); opacity: 0.8; }
+    }
+
+    header {
+      position: relative;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 80px 16px 48px;
+      z-index: 1;
+    }
+    .headline {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(42px, 7vw, 96px);
+      margin: 0 0 12px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 6px 16px rgba(255,106,168,.25);
+    }
+    .subtitle { color: var(--muted); margin: 0; font-weight: 300; }
+
+    .pill {
+      display: inline-flex; gap: 10px; align-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px; padding: 10px 16px; margin-top: 18px; box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+
+    main { display: grid; gap: 28px; padding: 0 16px 80px; z-index: 1; position: relative; }
+    section { max-width: 1100px; margin: 0 auto; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px; padding: 22px; box-shadow: var(--shadow);
+    }
+
+    .grid { display: grid; gap: 18px; }
+    .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+    .btn {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: white; border: 0; padding: 12px 18px; border-radius: 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 10px 24px var(--ring);
+    }
+
+    /* Countdown */
+    .countdown { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+    .chip { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); padding: 10px 14px; border-radius: 12px; min-width: 90px; text-align: center; }
+    .chip b { font-size: 28px; display: block; }
+
+    /* Timeline */
+    .timeline { position: relative; margin: 8px 0; }
+    .timeline::before { content: ""; position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: linear-gradient(var(--accent), transparent); }
+    .t-item { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
+    .t-dot { width: 12px; height: 12px; margin: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .t-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px; }
+    .t-card h4 { margin: 0 0 6px; }
+    .t-card p { margin: 0; color: var(--muted); }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+    .gallery img { width: 100%; height: 180px; object-fit: cover; border-radius: 16px; border: 1px solid rgba(255,255,255,.08); transition: transform .2s ease; cursor: pointer; }
+    .gallery img:hover { transform: translateY(-4px); }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.8); display: none; place-items: center; z-index: 10; }
+    .lightbox.show { display: grid; }
+    .lightbox img { max-width: min(92vw, 1400px); max-height: 86vh; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.12); }
+
+    /* Letter */
+    .letter { font-size: 18px; color: var(--ink); white-space: pre-wrap; }
+    .letter small { color: var(--muted); }
+
+    /* Audio */
+    .player { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .player audio { width: 100%; max-width: 420px; }
+
+    footer { text-align: center; color: var(--muted); padding: 40px 16px; }
+    a { color: #ffd3e6; }
+
+    /* Responsive tweaks */
+    @media (max-width: 520px) { .timeline::before{ left: 14px;} .t-item{ grid-template-columns: 32px 1fr; } }
+  </style>
+</head>
+<body>
+  <!-- Floating petals -->
+  <div id="petals"><div class="petal" style="left: 38.4576vw; animation: 10.9548s linear 4.20134s infinite normal none running fall; --drift: 69.4010309904927px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 57.7272vw; animation: 11.4113s linear 4.96333s infinite normal none running fall; --drift: -153.2885912503515px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 78.3739vw; animation: 9.05597s linear 0.195167s infinite normal none running fall; --drift: 254.26315052778565px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 9.45116vw; animation: 11.3885s linear 8.52724s infinite normal none running fall; --drift: 178.23612091187755px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 32.0216vw; animation: 11.0879s linear 7.56384s infinite normal none running fall; --drift: 148.73181322478666px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 0.33563vw; animation: 15.6171s linear 5.77708s infinite normal none running fall; --drift: 146.7617948918215px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 90.7922vw; animation: 14.7869s linear 7.74475s infinite normal none running fall; --drift: 102.43522594194567px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 27.3556vw; animation: 11.6263s linear 9.35619s infinite normal none running fall; --drift: 128.88906285042145px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 16.7255vw; animation: 16.0441s linear 4.35673s infinite normal none running fall; --drift: 203.87292146514744px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 67.3238vw; animation: 9.60833s linear 9.89459s infinite normal none running fall; --drift: -115.61128187426641px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 30.7037vw; animation: 12.8302s linear 6.63961s infinite normal none running fall; --drift: -115.69263194363477px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 70.6616vw; animation: 14.5932s linear 4.84935s infinite normal none running fall; --drift: 86.96466803025464px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 0.767977vw; animation: 8.75781s linear 8.90056s infinite normal none running fall; --drift: 134.18464035371738px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 17.4831vw; animation: 15.4916s linear 4.54391s infinite normal none running fall; --drift: -230.60693143285602px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 96.4849vw; animation: 13.7496s linear 7.82911s infinite normal none running fall; --drift: 177.7144048163658px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 85.1316vw; animation: 11.7138s linear 1.43962s infinite normal none running fall; --drift: -180.98019111507514px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 88.4079vw; animation: 12.2235s linear 3.37009s infinite normal none running fall; --drift: -81.53608907606662px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 60.3402vw; animation: 9.55578s linear 2.61441s infinite normal none running fall; --drift: -238.2722429998706px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 46.9974vw; animation: 15.9137s linear 5.85713s infinite normal none running fall; --drift: 158.0780875580938px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 69.1088vw; animation: 17.8604s linear 6.10767s infinite normal none running fall; --drift: 173.82893911109136px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 28.9373vw; animation: 9.38702s linear 8.13052s infinite normal none running fall; --drift: 82.28200126749864px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 54.599vw; animation: 12.5852s linear 2.52266s infinite normal none running fall; --drift: -259.8452368837976px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 40.7019vw; animation: 15.384s linear 8.64291s infinite normal none running fall; --drift: -247.58405022617447px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 38.2323vw; animation: 9.11445s linear 7.78392s infinite normal none running fall; --drift: 223.4792327936563px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 36.8199vw; animation: 16.4115s linear 5.35215s infinite normal none running fall; --drift: 81.62476237388967px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div><div class="petal" style="left: 87.739vw; animation: 16.7738s linear 3.28915s infinite normal none running fall; --drift: 140.22851242573017px;"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"></path></svg></div></div>
+
+  <header>
+    <h1 class="headline" id="coupleTitle">Chhay ♡ Thyda</h1>
+    <p class="subtitle" id="annivDateText">Since September 2, 2023</p>
+    <div class="pill"><span class="dot"></span><span id="yearsTogether">2 years together</span></div>
+
+    <div class="countdown" id="countdown">
+      <div class="chip"><b id="dd">0</b>Days</div>
+      <div class="chip"><b id="hh">6</b>Hours</div>
+      <div class="chip"><b id="mm">59</b>Minutes</div>
+      <div class="chip"><b id="ss">50</b>Seconds</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="grid cols-2">
+        <div>
+          <h2>First Song I Sing For U</h2>
+          <p class="subtitle">Press play and read the letter 💌</p>
+          <div class="player">
+             <button class="btn" id="playBtn">▶ Play</button>
+             <audio id="audio" preload="auto" controls></audio>
+          </div>
+        </div>
+        <div>
+          <h2>Dear <span id="dearName">My Love</span>,</h2>
+          <div class="letter" id="loveLetter">Thank you for choosing me, for standing by my side through our brightest days and our messy, imperfect ones. I adore your laugh, your boundless kindness, and the way you turn ordinary moments into sparks that light up my heart. Here’s to more sunsets shared hand in hand, more stolen snacks, more silly selfies, and a love that grows softer, stronger, and deeper with every passing day. I love you more than words could ever capture.
+Always yours,
+— <span id="fromName">Chea Namchhay</span>
+
+</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Our Timeline</h2>
+      <div class="timeline" id="timeline"><div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-card">
+        <h4>We Know Each Other<small class="subtitle"> • August, 2023</small></h4>
+        <p>The day our story started.</p>
+      </div></div><div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-card">
+        <h4>Officially us <small class="subtitle">• September 2, 2023</small></h4>
+        <p>We chose each other.</p>
+      </div></div></div>
+      <button class="btn" id="addMoment">Add a Moment</button>
+    </section>
+
+    <section class="card">
+      <h2>Photo Gallery</h2>
+      <p class="subtitle">Our Memory from 2023 to 2025</p>
+      <div class="gallery" id="gallery">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple1.jpg">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple2.jpg">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple3.jpg">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple4.jpg">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple5.jpg">
+  <img loading="lazy" alt="Our photo" src="download/photos/couple6.jpg">
+</div>
+
+
+    <section class="card">
+      <h2>Wish Wall</h2>
+      <p class="subtitle">Write a message for us in the box below. It saves on this browser only.</p>
+      <div class="grid cols-2">
+        <textarea id="wishInput" rows="5" placeholder="Write your wish or promise here…" style="width:100%; border-radius:12px; border:1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.04); color: var(--ink); padding:12px;"></textarea>
+        <div>
+          <button class="btn" id="saveWish">Save Wish</button>
+          <p class="subtitle" id="saveStatus" style="margin-top:8px;">—</p>
+          <ul id="wishList"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Made with ❤ for us • <span id="yearSpan">2025</span>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
+    <img alt="Opened photo">
+  </div>
+
+<script>
+/***************************
+ *  Editable Setup
+ ***************************/
+const CONFIG = {
+  coupleNames: "Chea ♡ Thyda",    // Appears in the big title
+  dearName: "My Love",               // In the letter heading
+  fromName: "Chea Namchhay",             // Signature in the letter
+  anniversaryDate: "2023-09-02",     // YYYY-MM-DD (set your real anniversary date)
+  nextAnniversary: "2025-09-02",     // The upcoming celebration date for countdown
+  theme: {
+    accent: "#ff6aa8",
+    accent2: "#9b5cff",
+    background: "#0f1020"
+  },
+  songSrc: "download/music/Nick_IT.mp3", // Replace with your mp3 path
+gallery: [
+  "download/photos/couple1.jpg",
+  "download/photos/couple2.jpg",
+  "download/photos/couple3.jpg",
+  "download/photos/couple4.jpg",
+  "download/photos/couple5.jpg",
+  "download/photos/couple6.jpg"
+],
+
+
+  timeline: [                         // Add/edit your moments
+    { date: "2023-08", title: "We met", text: "The day our story started." },
+    { date: "2023-09-02", title: "Officially us", text: "We chose each other." },
+  ]
+};
+
+/***************************
+ *  Helper Functions
+ ***************************/
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+function setTheme() {
+  if (CONFIG.theme?.accent) document.documentElement.style.setProperty('--accent', CONFIG.theme.accent);
+  if (CONFIG.theme?.accent2) document.documentElement.style.setProperty('--accent-2', CONFIG.theme.accent2);
+  if (CONFIG.theme?.background) document.documentElement.style.setProperty('--bg', CONFIG.theme.background);
+}
+
+function formatDate(iso) {
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function yearsSince(iso) {
+  const start = new Date(iso + 'T00:00:00');
+  const now = new Date();
+  let years = now.getFullYear() - start.getFullYear();
+  const mDiff = now.getMonth() - start.getMonth();
+  if (mDiff < 0 || (mDiff === 0 && now.getDate() < start.getDate())) years--;
+  return years;
+}
+
+
+function initHeader() {
+  $('#coupleTitle').textContent = CONFIG.coupleNames || 'Our Memory Book';
+  $('#annivDateText').textContent = 'Since ' + formatDate(CONFIG.anniversaryDate);
+  $('#dearName').textContent = CONFIG.dearName || 'My Love';
+  $('#fromName').textContent = CONFIG.fromName || 'Me';
+  const y = yearsSince(CONFIG.anniversaryDate);
+  $('#yearsTogether').textContent = '2 years together'
+}
+
+function initCountdown() {
+  const targetDate = new Date(CONFIG.nextAnniversary + 'T00:00:00');
+
+  function tick() {
+    // Get current time in France
+    const now = new Date();
+    const parisTime = new Date(now.toLocaleString("en-US", { timeZone: "Europe/Paris" }));
+
+    const diff = targetDate - parisTime;
+    const inPast = diff <= 0;
+
+    const d = inPast ? 0 : Math.floor(diff / (1000*60*60*24));
+    const h = inPast ? 0 : Math.floor((diff / (1000*60*60)) % 24);
+    const m = inPast ? 0 : Math.floor((diff / (1000*60)) % 60);
+    const s = inPast ? 0 : Math.floor((diff / 1000) % 60);
+
+    $('#dd').textContent = d;
+    $('#hh').textContent = h;
+    $('#mm').textContent = m;
+    $('#ss').textContent = s;
+
+    if (inPast) $('#countdown').previousElementSibling?.classList?.add('celebrate');
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+
+function initTimeline() {
+  const wrap = $('#timeline');
+  wrap.innerHTML = '';
+  const items = [...CONFIG.timeline].sort((a,b) => new Date(a.date) - new Date(b.date));
+  for (const it of items) {
+    const row = document.createElement('div'); row.className = 't-item';
+    row.innerHTML = `
+      <div class="t-dot"></div>
+      <div class="t-card">
+        <h4>${it.title} <small class="subtitle">• ${formatDate(it.date)}</small></h4>
+        <p>${it.text}</p>
+      </div>`;
+    wrap.appendChild(row);
+  }
+}
+
+function initGallery() {
+  const g = $('#gallery'); g.innerHTML = '';
+  for (const src of CONFIG.gallery) {
+    const img = document.createElement('img');
+    img.loading = 'lazy'; img.alt = 'Our photo'; img.src = src;
+    img.addEventListener('click', () => openLightbox(src));
+    g.appendChild(img);
+  }
+}
+
+
+function openLightbox(src) {
+  const lb = $('#lightbox'); $('img', lb).src = src; lb.classList.add('show');
+}
+
+function closeLightbox(e) {
+  if (e.target.id === 'lightbox') e.currentTarget.classList.remove('show');
+}
+
+function initWishes() {
+  const list = JSON.parse(localStorage.getItem('wishes') || '[]');
+  renderWishes(list);
+  $('#saveWish').addEventListener('click', () => {
+    const txt = $('#wishInput').value.trim();
+    if (!txt) return;
+    const updated = [{ text: txt, at: new Date().toISOString() }, ...list];
+    localStorage.setItem('wishes', JSON.stringify(updated));
+    $('#wishInput').value = '';
+    $('#saveStatus').textContent = 'Saved ✓';
+    renderWishes(updated);
+  });
+}
+
+function renderWishes(list) {
+  const ul = $('#wishList'); ul.innerHTML = '';
+  for (const w of list) {
+    const li = document.createElement('li');
+    const when = new Date(w.at).toLocaleString();
+    li.textContent = `"${w.text}" — ${when}`;
+    ul.appendChild(li);
+  }
+}
+
+function initAudio() {
+  const audio = document.getElementById('audio');
+  const playBtn = document.getElementById('playBtn');
+
+  if (audio) {
+    audio.src = CONFIG.songSrc;
+  }
+
+  if (audio && playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "⏸ Pause";
+      } else {
+        audio.pause();
+        playBtn.textContent = "▶ Play";
+      }
+    });
+  }
+}
+
+
+
+function initAddMoment() {
+  $('#addMoment').addEventListener('click', () => {
+    const title = prompt('Title (e.g., Got engaged)');
+    if (!title) return;
+    const date = prompt('Date (YYYY-MM-DD)');
+    if (!date) return;
+    const text = prompt('Short note');
+    CONFIG.timeline.push({ title, date, text });
+    initTimeline();
+  });
+}
+
+function spawnPetals(n=20) {
+  const root = document.getElementById('petals');
+  for (let i=0;i<n;i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const left = Math.random()*100;
+    const delay = Math.random()*10;
+    const duration = 8 + Math.random()*10;
+    const drift = (Math.random() < .5 ? '-' : '') + (Math.random()*200 + 60) + 'px';
+    p.style.left = left + 'vw';
+    p.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+    p.style.setProperty('--drift', drift);
+    p.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c3 0 5 2.5 5 5.5S14 12 12 12s-5-2.5-5-5.5S9 2 12 2Z"/></svg>';
+    root.appendChild(p);
+  }
+}
+
+function initFooterYear(){ $('#yearSpan').textContent = new Date().getFullYear(); }
+
+/***************************
+ *  Boot
+ ***************************/
+setTheme();
+initHeader();
+initCountdown();
+initTimeline();
+initGallery();
+initWishes();
+initAudio();
+initAddMoment();
+spawnPetals(26);
+initFooterYear();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+
+    // Set the path to your music file
+    audio.src = "download/music/Nick_IT.mp3";
+
+    // Play audio when button is clicked
+    if (audio && playBtn) {
+      playBtn.addEventListener('click', () => audio.play());
+    }
+  });
+
+// Close lightbox on click background
+$('#lightbox').addEventListener('click', closeLightbox);
+</script>
+
+
+</body>
+</html>
